@@ -3,7 +3,7 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- Set <space> as the leader key
+-- Set \ as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = '\\'
@@ -127,9 +127,10 @@ vim.keymap.set("n", ",nt", ":NvimTreeToggle<cr>", {silent = true, noremap = true
 
 -- Indenting
 vim.opt.shiftwidth = 2
-vim.opt.smartindent = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
+vim.opt.smartindent = true
+vim.opt.expandtab = true
 
 -- Typos
 -- Fix common typos
@@ -178,6 +179,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  { "tpope/vim-sleuth" },
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
