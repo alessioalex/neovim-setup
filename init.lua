@@ -114,26 +114,34 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Vim UI
+-- alessioalex CUSTOM - Vim UI
 vim.opt.textwidth=80
 vim.opt.colorcolumn="81"
 
--- like vnoremap
+-- alessioalex CUSTOM - like vnoremap
 vim.keymap.set("v", ">", ">gv", { desc = "'normal' indentation, doesn't exit visual mode when indenting" })
 vim.keymap.set("v", "<", "<gv", { desc = "'normal' indentation, doesn't exit visual mode when indenting" })
 vim.keymap.set("i", ",e", "<Esc>", { desc = "exit insert mode with ,e" })
+vim.keymap.set("n", ",ev", "<cmd>e ~/.config/nvim/init.lua<CR>");
 -- NerdTree style
 vim.keymap.set("n", ",nt", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
 
--- Indenting
+-- alessioalex CUSTOM - Indenting
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.smartindent = true
 vim.opt.expandtab = true
+vim.opt.wrap = false
+
+-- alessioalex CUSTOM - https://github.com/ThePrimeagen/neovimrc/blob/master/lua/theprimeagen/remap.lua
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Typos
--- Fix common typos
+-- alessioalex CUSTOM - Fix common typos
 vim.cmd([[
     cnoreabbrev W! w!
     cnoreabbrev W1 w!
@@ -552,12 +560,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -711,33 +719,33 @@ require('lazy').setup({
     end,
   },
 
-	-- file tree
+  -- file tree
   {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     config = function()
-			local function my_on_attach(bufnr)
-				local api = require "nvim-tree.api"
+      local function my_on_attach(bufnr)
+        local api = require "nvim-tree.api"
 
-				local function opts(desc)
-					return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-				end
+        local function opts(desc)
+          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
 
-				-- default mappings
-				api.config.mappings.default_on_attach(bufnr)
+        -- default mappings
+        api.config.mappings.default_on_attach(bufnr)
 
-				-- custom mappings
-				-- vim.keymap.set('n', '<C-]>',   api.tree.change_root_to_node,        opts('CD'))
-				-- NerdTree style
-				vim.keymap.set('n', 'C',   api.tree.change_root_to_node,        opts('CD'))
-			end
+        -- custom mappings
+        -- vim.keymap.set('n', '<C-]>',   api.tree.change_root_to_node,        opts('CD'))
+        -- NerdTree style
+        vim.keymap.set('n', 'C',   api.tree.change_root_to_node,        opts('CD'))
+      end
 
       -- require("nvim-tree").setup()
       require("nvim-tree").setup {
-				---
-				on_attach = my_on_attach,
-				---
-			}
+        ---
+        on_attach = my_on_attach,
+        ---
+      }
     end,
   },
 })
