@@ -24,14 +24,17 @@ In normal mode:
 - \q  = references to quicklist
 - <C-k> = move to next reference from quicklist
 - <C-j> = move to previous reference from quicklist
-- \ll = highlight current line (useful for pair programming)
-- \l, = remove all highlighted lines (with \ll)
+- \l = highlight current line (useful for pair programming)
+- \c = remove all highlighted lines (with \ll)
+- \u  = toggle undo tree
+- \ee = insert golang if err snippet
 
 In insert mode:
 
 - ,e    = <Esc>
 - <C-f> = scroll forward in autocomplete docs
 - <C-b> = scroll back in autocomplete docs
+- \ee   = insert golang if err snippet
 
 ### snippets
 

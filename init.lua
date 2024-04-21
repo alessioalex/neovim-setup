@@ -792,6 +792,20 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- clear all the highlighted lines
 vim.cmd([[
   highlight LineHighlight ctermbg=darkgray guibg=#444759
-  nnoremap <silent> <Leader>ll :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
-  nnoremap <silent> <Leader>l, :call clearmatches()<CR>
+  nnoremap <silent> <Leader>l :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
+  nnoremap <silent> <Leader>c :call clearmatches()<CR>
 ]])
+
+-- alessioalex CUSTOM - Go "if err != nil { return err }" snippet
+-- \ee in both normal and insert mode will add the snippet
+vim.keymap.set(
+  "n",
+  "<leader>ee",
+  "oif err != nil {<CR>}<Esc>Oreturn err<Esc>"
+)
+
+vim.keymap.set(
+  "i",
+  "<leader>ee",
+  "if err != nil {<CR>}<Esc>Oreturn err<Esc><down>o"
+)
