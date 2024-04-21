@@ -7,7 +7,7 @@ installed. Then just enter neovim.
 
 ### shortcuts
 
-Note: <leader> is \
+Note: leader is \
 
 In normal mode:
 
@@ -19,11 +19,11 @@ In normal mode:
 - \c  = comment line/selection
 - C   = change root dir in nvim tree
 - K   = Opens a popup that displays documentation about the word under your cursor
-- gd  = go to definition (<C-t> to go back)
-- gr  = go to references (<C-t> to go back)
-- <C-q> = move references to quicklist (THIS IS AWESOME!!)
-- <C-k> = move to next reference from quicklist
-- <C-j> = move to previous reference from quicklist
+- gd  = go to definition (Ctrl-t to go back)
+- gr  = go to references (Ctrl-t to go back)
+- Ctrl-q = move references to quicklist (THIS IS AWESOME!!)
+- Ctrl-k = move to next reference from quicklist
+- Ctrl-j = move to previous reference from quicklist
 - \l = highlight current line (useful for pair programming)
 - \c = remove all highlighted lines (with \ll)
 - \u  = toggle undo tree
@@ -34,10 +34,10 @@ In normal mode:
 
 In insert mode:
 
-- ,e    = <Esc>
-- <C-f> = scroll forward in autocomplete docs
-- <C-b> = scroll back in autocomplete docs
-- \ee   = insert golang if err snippet
+- ,e     = Esc
+- Ctrl-f = scroll [f]orward in autocomplete docs
+- Ctrl-b = scroll [b]ack in autocomplete docs
+- \ee    = insert golang if err snippet
 
 ### snippets
 
