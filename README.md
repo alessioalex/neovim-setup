@@ -24,6 +24,8 @@ In normal mode:
 - \q  = references to quicklist
 - <C-k> = move to next reference from quicklist
 - <C-j> = move to previous reference from quicklist
+- \ll = highlight current line (useful for pair programming)
+- \l, = remove all highlighted lines (with \ll)
 
 In insert mode:
 
