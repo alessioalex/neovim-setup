@@ -28,6 +28,7 @@ In normal mode:
 - \c = remove all highlighted lines (with \ll)
 - \u  = toggle undo tree
 - \ee = insert golang if err snippet
+- \xx = toggle trouble plugin -> a nicer quicklist with diagnostics
 
 In insert mode:
 
