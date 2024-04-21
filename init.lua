@@ -140,8 +140,8 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
--- Typos
 -- alessioalex CUSTOM - Fix common typos
+-- Typos
 vim.cmd([[
     cnoreabbrev W! w!
     cnoreabbrev W1 w!
@@ -164,6 +164,8 @@ vim.cmd([[
     cnoreabbrev Qa qa
     cnoreabbrev Qall qall
     cnoreabbrev WQA wqa
+    cnoreabbrev Wqa wqa
+    cnoreabbrev WQa wqa
 ]])
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -188,36 +190,36 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   { "tpope/vim-sleuth" },
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		init = function()
-			vim.cmd.colorscheme 'catppuccin-mocha'
-		end,
-	},
-
-	-- "gc" to comment visual regions/lines
   {
-		'numToStr/Comment.nvim',
-		lazy = false,
-		opts = {
-			---LHS of toggle mappings in NORMAL mode
-			toggler = {
-				---Line-comment toggle keymap
-				line = '<leader>c',
-				---Block-comment toggle keymap
-				block = 'gbc',
-			},
-			---LHS of operator-pending mappings in NORMAL and VISUAL mode
-			opleader = {
-					---Line-comment keymap
-					line = '<leader>c',
-					---Block-comment keymap
-					block = 'gb',
-			},
-		},
-	},
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'catppuccin-mocha'
+    end,
+  },
+
+  -- "gc" to comment visual regions/lines
+  {
+    'numToStr/Comment.nvim',
+    lazy = false,
+    opts = {
+      ---LHS of toggle mappings in NORMAL mode
+      toggler = {
+        ---Line-comment toggle keymap
+        line = '<leader>c',
+        ---Block-comment toggle keymap
+        block = 'gbc',
+      },
+      ---LHS of operator-pending mappings in NORMAL and VISUAL mode
+      opleader = {
+        ---Line-comment keymap
+        line = '<leader>c',
+        ---Block-comment keymap
+        block = 'gb',
+      },
+    },
+  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -349,8 +351,8 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-			-- ADDED BY ME
-			'williamboman/nvim-lsp-installer',
+      -- alessioalex CUSTOM
+      'williamboman/nvim-lsp-installer',
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -540,7 +542,7 @@ require('lazy').setup({
     end,
   },
 
-	{ -- Autocompletion
+  { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -607,7 +609,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-					-- MODIFIED by me
+          -- alessioalex CUSTOM
           -- ['<C-y>'] = cmp.mapping.confirm { select = true },
           ['<cr>'] = cmp.mapping.confirm { select = true },
 
@@ -748,8 +750,17 @@ require('lazy').setup({
       }
     end,
   },
+
+  {
+    "mbbill/undotree",
+    config = function()
+      vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+    end
+  }
 })
 
+-- alessioalex CUSTOM
+-- Go autoimports
 -- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = "*.go",
@@ -773,3 +784,14 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     vim.lsp.buf.format({async = false})
   end
 })
+
+-- alessioalex CUSTOM - highlight lines / remove highlighted lines
+-- https://vimtricks.com/p/highlight-specific-lines/
+-- define line highlight color
+-- highlight the current line
+-- clear all the highlighted lines
+vim.cmd([[
+  highlight LineHighlight ctermbg=darkgray guibg=#444759
+  nnoremap <silent> <Leader>ll :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
+  nnoremap <silent> <Leader>l, :call clearmatches()<CR>
+]])
