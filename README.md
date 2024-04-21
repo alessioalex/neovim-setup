@@ -21,7 +21,7 @@ In normal mode:
 - K   = Opens a popup that displays documentation about the word under your cursor
 - gd  = go to definition (<C-t> to go back)
 - gr  = go to references (<C-t> to go back)
-- \q  = references to quicklist
+- <C-q> = move references to quicklist (THIS IS AWESOME!!)
 - <C-k> = move to next reference from quicklist
 - <C-j> = move to previous reference from quicklist
 - \l = highlight current line (useful for pair programming)
@@ -29,6 +29,8 @@ In normal mode:
 - \u  = toggle undo tree
 - \ee = insert golang if err snippet
 - \xx = toggle trouble plugin -> a nicer quicklist with diagnostics
+- ]t and [t = toggle between trouble list items (without manually going through
+  the list - next and prev)
 
 In insert mode:
 
