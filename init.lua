@@ -814,7 +814,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 vim.cmd([[
   highlight LineHighlight ctermbg=darkgray guibg=#444759
   nnoremap <silent> <Leader>l :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
-  nnoremap <silent> <Leader>c :call clearmatches()<CR>
+  nnoremap <silent> <Leader>, :call clearmatches()<CR>
 ]])
 
 -- alessioalex CUSTOM - Go "if err != nil { return err }" snippet

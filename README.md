@@ -25,7 +25,7 @@ In normal mode:
 - Ctrl-k = move to next reference from quicklist
 - Ctrl-j = move to previous reference from quicklist
 - \l = highlight current line (useful for pair programming)
-- \c = remove all highlighted lines (with \ll)
+- \, = remove all highlighted lines (with \ll)
 - \u  = toggle undo tree
 - \ee = insert golang if err snippet
 - \xx = toggle trouble plugin -> a nicer quicklist with diagnostics
