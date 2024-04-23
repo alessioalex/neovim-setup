@@ -42,3 +42,13 @@ In insert mode:
 ### snippets
 
 https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/go.json
+
+### attention!
+
+Make sure you have `goimports` installed and the go bin path set into your
+.bashrc / .zshrc:
+
+```bash
+go install golang.org/x/tools/cmd/goimports@latest
+echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc
+```

@@ -115,8 +115,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- alessioalex CUSTOM - Vim UI
-vim.opt.textwidth=80
-vim.opt.colorcolumn="81"
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = "81"
 
 -- alessioalex CUSTOM - like vnoremap
 vim.keymap.set("v", ">", ">gv", { desc = "'normal' indentation, doesn't exit visual mode when indenting" })
@@ -124,7 +124,7 @@ vim.keymap.set("v", "<", "<gv", { desc = "'normal' indentation, doesn't exit vis
 vim.keymap.set("i", ",e", "<Esc>", { desc = "exit insert mode with ,e" })
 vim.keymap.set("n", ",ev", "<cmd>e ~/.config/nvim/init.lua<CR>");
 -- NerdTree style
-vim.keymap.set("n", ",nt", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
+vim.keymap.set("n", ",nt", ":NvimTreeToggle<cr>", { silent = true, noremap = true })
 
 -- alessioalex CUSTOM - Indenting
 vim.opt.shiftwidth = 2
@@ -261,7 +261,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -652,7 +652,7 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-	{ -- Collection of various small independent plugins/modules
+  { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
       -- Better Around/Inside textobjects
@@ -690,7 +690,7 @@ require('lazy').setup({
     end,
   },
 
-	{ -- Highlight, edit, and navigate code
+  { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
@@ -739,7 +739,7 @@ require('lazy').setup({
         -- custom mappings
         -- vim.keymap.set('n', '<C-]>',   api.tree.change_root_to_node,        opts('CD'))
         -- NerdTree style
-        vim.keymap.set('n', 'C',   api.tree.change_root_to_node,        opts('CD'))
+        vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts('CD'))
       end
 
       -- require("nvim-tree").setup()
@@ -770,40 +770,31 @@ require('lazy').setup({
       vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
       vim.keymap.set("n", "]t", function()
-        require("trouble").next({skip_groups = true, jump = true});
+        require("trouble").next({ skip_groups = true, jump = true });
       end)
 
       vim.keymap.set("n", "[t", function()
-        require("trouble").previous({skip_groups = true, jump = true});
+        require("trouble").previous({ skip_groups = true, jump = true });
       end)
     end
-  }
-})
+  },
 
--- alessioalex CUSTOM
--- Go autoimports
--- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = "*.go",
-  callback = function()
-    local params = vim.lsp.util.make_range_params()
-    params.context = {only = {"source.organizeImports"}}
-    -- buf_request_sync defaults to a 1000ms timeout. Depending on your
-    -- machine and codebase, you may want longer. Add an additional
-    -- argument after params if you find that you have to write the file
-    -- twice for changes to be saved.
-    -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-    for cid, res in pairs(result or {}) do
-      for _, r in pairs(res.result or {}) do
-        if r.edit then
-          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-          vim.lsp.util.apply_workspace_edit(r.edit, enc)
-        end
-      end
-    end
-    vim.lsp.buf.format({async = false})
-  end
+  {
+    'stevearc/conform.nvim',
+    opts = {
+      formatters_by_ft = {
+        -- Conform will run multiple formatters sequentially
+        go = { "goimports", "gofmt" },
+        -- Use a sub-list to run only the first available formatter
+        javascript = { { "prettierd", "prettier" } },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
+  }
 })
 
 -- alessioalex CUSTOM - highlight lines / remove highlighted lines
