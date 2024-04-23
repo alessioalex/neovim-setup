@@ -817,6 +817,13 @@ vim.cmd([[
   nnoremap <silent> <Leader>, :call clearmatches()<CR>
 ]])
 
+-- alessioalex CUSTOM
+-- Make Vim move to previous/next line after
+-- reaching first/last char in the line
+vim.cmd([[
+  set whichwrap=b,s,h,l,<,>,[,]
+]])
+
 -- alessioalex CUSTOM - Go "if err != nil { return err }" snippet
 -- \ee in both normal and insert mode will add the snippet
 vim.keymap.set(
