@@ -811,8 +811,11 @@ vim.cmd([[
 -- alessioalex CUSTOM
 -- Make Vim move to previous/next line after
 -- reaching first/last char in the line
+-- without startofline set gg sometimes wouldn't jump to the beginning of the
+-- 1st line
 vim.cmd([[
   set whichwrap=b,s,h,l,<,>,[,]
+  set startofline
 ]])
 
 -- alessioalex CUSTOM - Go "if err != nil { return err }" snippet
