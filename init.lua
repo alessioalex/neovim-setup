@@ -492,7 +492,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        -- tsserver = {},
         --
 
         lua_ls = {
@@ -537,6 +537,17 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+        },
+      }
+
+      -- disable TypeScript cannot find declaration files etc
+      require 'lspconfig'.eslint.setup {}
+
+      require 'lspconfig'.tsserver.setup {
+        settings = {
+          diagnostics = {
+            ignoredCodes = { 6133, 7016 }, -- error codes to ignore
+          }
         },
       }
     end,
@@ -746,7 +757,12 @@ require('lazy').setup({
       require("nvim-tree").setup {
         ---
         on_attach = my_on_attach,
+        -- view = { adaptive_size = true }
         ---
+        update_focused_file = {
+          enable = true,
+          update_root = true,
+        },
       }
     end,
   },
