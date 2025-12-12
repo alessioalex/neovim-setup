@@ -802,7 +802,13 @@ require('lazy').setup({
         -- Conform will run multiple formatters sequentially
         go = { "goimports", "gofmt" },
         -- Use a sub-list to run only the first available formatter
-        javascript = { { "prettierd", "prettier" } },
+        -- javascript = { { "prettierd", "prettier" } },
+        javascript = {
+          "prettierd",
+          "prettier",
+          timeout_ms = 2000,
+          stop_after_first = true,
+        },          
       },
       format_on_save = {
         -- These options will be passed to conform.format()
