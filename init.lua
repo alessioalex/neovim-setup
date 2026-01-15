@@ -10,7 +10,8 @@ vim.g.mapleader = '\\'
 vim.g.maplocalleader = '\\'
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = true
+vim.g.have_nerd_font = false
+
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -242,7 +243,7 @@ require('lazy').setup({
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -261,7 +262,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      -- { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -483,7 +484,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {},
+        -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -537,17 +538,6 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
-        },
-      }
-
-      -- disable TypeScript cannot find declaration files etc
-      require 'lspconfig'.eslint.setup {}
-
-      require 'lspconfig'.tsserver.setup {
-        settings = {
-          diagnostics = {
-            ignoredCodes = { 6133, 7016 }, -- error codes to ignore
-          }
         },
       }
     end,
@@ -757,12 +747,17 @@ require('lazy').setup({
       require("nvim-tree").setup {
         ---
         on_attach = my_on_attach,
-        -- view = { adaptive_size = true }
         ---
-        update_focused_file = {
-          enable = true,
-          update_root = true,
-        },
+        renderer = {
+          icons = {
+            show = {
+              file = false,
+              folder = false,
+              folder_arrow = false,
+              git = false
+            }
+          }
+        }
       }
     end,
   },
@@ -778,7 +773,7 @@ require('lazy').setup({
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
+      vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle("diagnostics") end)
       vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
       vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
       vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
@@ -808,7 +803,7 @@ require('lazy').setup({
           "prettier",
           timeout_ms = 2000,
           stop_after_first = true,
-        },          
+        },
       },
       format_on_save = {
         -- These options will be passed to conform.format()
@@ -816,8 +811,26 @@ require('lazy').setup({
         lsp_fallback = true,
       },
     },
+  },
+
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   }
 })
+
+-- Disable stylua LSP (it's used as a formatter via conform.nvim, not as LSP)
+vim.lsp.enable('stylua', false)
 
 -- alessioalex CUSTOM - highlight lines / remove highlighted lines
 -- https://vimtricks.com/p/highlight-specific-lines/
