@@ -307,11 +307,28 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
+      -- Action to open file and reveal in nvim-tree
+      local actions = require('telescope.actions')
+      local function open_and_reveal(prompt_bufnr)
+        actions.select_default(prompt_bufnr)
+        vim.defer_fn(function()
+          require('nvim-tree.api').tree.find_file({ open = true, focus = false })
+        end, 50)
+      end
+
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sf', function()
+        builtin.find_files({
+          attach_mappings = function(_, map)
+            map('i', '<CR>', open_and_reveal)
+            map('n', '<CR>', open_and_reveal)
+            return true
+          end,
+        })
+      end, { desc = '[S]earch [F]iles and reveal in tree' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
