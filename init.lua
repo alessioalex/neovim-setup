@@ -115,6 +115,28 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Open nvim-tree on startup and reveal the current file
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = vim.api.nvim_create_augroup('nvim-tree-open', { clear = true }),
+  callback = function()
+    require('nvim-tree.api').tree.find_file({ open = true, focus = false })
+  end,
+})
+
+-- Auto-reveal current file in nvim-tree when switching buffers
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = vim.api.nvim_create_augroup('nvim-tree-reveal', { clear = true }),
+  callback = function()
+    local ok, api = pcall(require, 'nvim-tree.api')
+    if not ok then
+      return
+    end
+    if api.tree.is_visible() then
+      api.tree.find_file({ open = false, focus = false })
+    end
+  end,
+})
+
 -- alessioalex CUSTOM - Vim UI
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = "81"
@@ -743,6 +765,7 @@ require('lazy').setup({
   {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    event = "VimEnter",
     config = function()
       local function my_on_attach(bufnr)
         local api = require "nvim-tree.api"
