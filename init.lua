@@ -579,6 +579,15 @@ require('lazy').setup({
           end,
         },
       }
+
+      -- sourcekit-lsp ships with Xcode toolchains, so we configure it directly.
+      if vim.fn.executable 'xcrun' == 1 then
+        vim.lsp.config('sourcekit', {
+          cmd = { 'xcrun', 'sourcekit-lsp' },
+          capabilities = capabilities,
+        })
+        vim.lsp.enable 'sourcekit'
+      end
     end,
   },
 
