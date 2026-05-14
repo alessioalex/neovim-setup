@@ -222,27 +222,22 @@ require('lazy').setup({
     end,
   },
 
-  -- "gc" to comment visual regions/lines
+
   {
-    'numToStr/Comment.nvim',
-    lazy = false,
-    opts = {
-      ---LHS of toggle mappings in NORMAL mode
-      toggler = {
-        ---Line-comment toggle keymap
-        line = '<leader>c',
-        ---Block-comment toggle keymap
-        block = 'gbc',
-      },
-      ---LHS of operator-pending mappings in NORMAL and VISUAL mode
-      opleader = {
-        ---Line-comment keymap
-        line = '<leader>c',
-        ---Block-comment keymap
-        block = 'gb',
-      },
-    },
+    "echasnovski/mini.comment",
+    version = false,
+    config = function()
+      require("mini.comment").setup()
+    end,
   },
+
+  -- {
+  --   'numToStr/Comment.nvim',
+  --   lazy = false,
+  --   config = function()
+  --     require('Comment').setup()
+  --   end,
+  -- },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -386,13 +381,13 @@ require('lazy').setup({
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    lazy = false,
+    priority = 900, -- 👈 (optional but good)
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      -- alessioalex CUSTOM
-      'williamboman/nvim-lsp-installer',
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -523,7 +518,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -532,7 +527,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {
@@ -561,10 +556,10 @@ require('lazy').setup({
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
+      local ensure_installed = {
+        "typescript-language-server", -- ✅ correct name
+        'stylua',                     -- Used to format Lua code
+      }
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
@@ -742,6 +737,9 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    version = false,
+    lazy = false,    -- 👈 IMPORTANT
+    priority = 1000, -- 👈 load early
     opts = {
       ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'swift', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
@@ -756,20 +754,14 @@ require('lazy').setup({
       indent = { enable = true, disable = { 'ruby' } },
     },
     config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+      local ok, configs = pcall(require, 'nvim-treesitter.configs')
+      if not ok then
+        return
+      end
 
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
+      configs.setup(opts)
+    end
   },
-
   -- file tree
   {
     "nvim-tree/nvim-tree.lua",
@@ -934,3 +926,7 @@ vim.keymap.set(
   "<leader>ee",
   "if err != nil {<CR>}<Esc>Oreturn err<Esc><down>o"
 )
+
+-- ✅ Comment.nvim mappings
+vim.keymap.set("n", "<leader>c", "gcc", { remap = true, desc = "Toggle comment line" })
+vim.keymap.set("v", "<leader>c", "gc", { remap = true, desc = "Toggle comment selection" })
